@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '400px',
   },
   form: {
-    width: '100%', 
+    width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -54,10 +54,10 @@ function Registration() {
                 password
             });
             console.log(response.data);
-        
+            // Handle successful registration (e.g., redirect to login)
         } catch (error) {
             console.error('Registration failed:', error.message);
-            
+            // Handle registration error (e.g., show an error message)
         }
         setIsLoading(false);
     };

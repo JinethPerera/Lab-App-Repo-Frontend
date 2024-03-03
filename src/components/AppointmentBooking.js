@@ -1,3 +1,4 @@
+// AppointmentBooking.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,11 +10,13 @@ import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
+import MenuItem from '@material-ui/core/MenuItem';
+
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -41,45 +44,43 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
-  message: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  icon: {
-    marginRight: theme.spacing(1),
-  },
 }));
 
-function Login() {
+function AppointmentBooking() {
   const classes = useStyles();
-  const navigate = useNavigate();
-
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [appointmentData, setAppointmentData] = useState({
+    patientName: '',
+    contactInformation: '',
+    dateOfBirth: '',
+    appointmentDateTime: '',
+    testType: '',
+    status: 'Pending',
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [loginFailed, setLoginFailed] = useState(false);
+  const [bookingFailed, setBookingFailed] = useState(false);
 
   const handleSnackbarClose = () => {
     setOpenSnackbar(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setAppointmentData({ ...appointmentData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post('http://localhost:8090/login', {
-        username,
-        password
-      });
-      setMessage(response.data);
+      const response = await axios.post('http://localhost:8090/appointment/book', appointmentData);
+      setMessage('Appointment booked successfully!');
       setOpenSnackbar(true);
-      navigate('/book-appointment');
     } catch (error) {
-      setMessage('Login failed: ' + error.message);
+      setMessage('Appointment booking failed: ' + error.message);
       setOpenSnackbar(true);
-      setLoginFailed(true);
+      setBookingFailed(true);
     }
     setIsLoading(false);
   };
@@ -91,18 +92,18 @@ function Login() {
           <Typography variant="h6" className={classes.title}>
             Lab Appointment System
           </Typography>
-          <Link to="/registration" color="inherit" style={{ marginRight: '20px' }}>
-            Register
+          <Link href="/login" color="inherit" style={{ marginRight: '20px' }}>
+            Login
           </Link>
-          <Link to="/contact" color="inherit">
-            Contact
+          <Link href="/registration" color="inherit">
+            Register
           </Link>
         </Toolbar>
       </AppBar>
       <Container component="main" maxWidth="xs" className={classes.container}>
         <Box className={classes.box}>
           <Typography component="h1" variant="h5" align="center">
-            Login
+            Book Appointment
           </Typography>
           <form className={classes.form} onSubmit={handleSubmit}>
             <TextField
@@ -110,20 +111,68 @@ function Login() {
               margin="normal"
               required
               fullWidth
-              label="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              label="Patient Name"
+              name="patientName"
+              value={appointmentData.patientName}
+              onChange={handleChange}
             />
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              label="Contact Information"
+              name="contactInformation"
+              value={appointmentData.contactInformation}
+              onChange={handleChange}
             />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              label="Date of Birth"
+              type="date"
+              name="dateOfBirth"
+              value={appointmentData.dateOfBirth}
+              onChange={handleChange}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              label="Appointment Date and Time"
+              type="datetime-local"
+              name="appointmentDateTime"
+              value={appointmentData.appointmentDateTime}
+              onChange={handleChange}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              label="Test Type"
+              name="testType"
+              value={appointmentData.testType}
+              onChange={handleChange}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              label="Status"
+              name="status"
+              value={appointmentData.status}
+              onChange={handleChange}
+              select
+            >
+              <MenuItem value="Pending">Pending</MenuItem>
+              <MenuItem value="Completed">Completed</MenuItem>
+              <MenuItem value="Canceled">Canceled</MenuItem>
+            </TextField>
             <Button
               type="submit"
               fullWidth
@@ -132,7 +181,7 @@ function Login() {
               className={classes.submit}
               disabled={isLoading}
             >
-              {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Login'}
+              {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Book Appointment'}
             </Button>
           </form>
           <Snackbar
@@ -146,11 +195,11 @@ function Login() {
           >
             <SnackbarContent
               style={{
-                backgroundColor: loginFailed ? '#f44336' : '#4caf50',
+                backgroundColor: bookingFailed ? '#f44336' : '#4caf50',
               }}
               message={
                 <span className={classes.message}>
-                  {loginFailed ? <ErrorIcon className={classes.icon} /> : <CheckCircleIcon className={classes.icon} />}
+                  {bookingFailed ? <ErrorIcon className={classes.icon} /> : <CheckCircleIcon className={classes.icon} />}
                   {message}
                 </span>
               }
@@ -162,4 +211,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default AppointmentBooking;
