@@ -74,7 +74,7 @@ function AppointmentBooking() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post('http://localhost:8090/appointment/book', appointmentData);
+      const response = await axios.post('http://localhost:8091/appointment/book', appointmentData);
       setMessage('Appointment booked successfully!');
       setOpenSnackbar(true);
     } catch (error) {
@@ -92,10 +92,10 @@ function AppointmentBooking() {
           <Typography variant="h6" className={classes.title}>
             Lab Appointment System
           </Typography>
-          <Link href="/login" color="inherit" style={{ marginRight: '20px' }}>
-            Login
+          <Link to="/my-appointment" color="inherit" style={{ marginRight: '20px' }}>
+            My Appointments
           </Link>
-          <Link href="/registration" color="inherit">
+          <Link to="/registration" color="inherit">
             Register
           </Link>
         </Toolbar>
@@ -113,7 +113,7 @@ function AppointmentBooking() {
               fullWidth
               label="Patient Name"
               name="patientName"
-              value={appointmentData.patientName}
+              value={appointmentData.patientName ||""}
               onChange={handleChange}
             />
             <TextField
@@ -123,7 +123,7 @@ function AppointmentBooking() {
               fullWidth
               label="Contact Information"
               name="contactInformation"
-              value={appointmentData.contactInformation}
+              value={appointmentData.contactInformation ||""}
               onChange={handleChange}
             />
             <TextField
@@ -134,7 +134,7 @@ function AppointmentBooking() {
               label="Date of Birth"
               type="date"
               name="dateOfBirth"
-              value={appointmentData.dateOfBirth}
+              value={appointmentData.dateOfBirth ||""}
               onChange={handleChange}
             />
             <TextField
@@ -145,9 +145,10 @@ function AppointmentBooking() {
               label="Appointment Date and Time"
               type="datetime-local"
               name="appointmentDateTime"
-              value={appointmentData.appointmentDateTime}
+              value={appointmentData.appointmentDateTime ||""}
               onChange={handleChange}
             />
+            
             <TextField
               variant="outlined"
               margin="normal"
@@ -155,7 +156,7 @@ function AppointmentBooking() {
               fullWidth
               label="Test Type"
               name="testType"
-              value={appointmentData.testType}
+              value={appointmentData.testType ||""}
               onChange={handleChange}
             />
             <TextField
@@ -165,7 +166,7 @@ function AppointmentBooking() {
               fullWidth
               label="Status"
               name="status"
-              value={appointmentData.status}
+              value={appointmentData.status ||""}
               onChange={handleChange}
               select
             >

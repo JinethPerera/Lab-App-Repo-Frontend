@@ -3,8 +3,10 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/Login'; 
 import Registration from './components/Registration'; 
-import AppointmentBooking from './components/AppointmentBooking'; // Import the AppointmentBooking component
-
+import AppointmentBooking from './components/AppointmentBooking';
+import AdminDashboard from './components/AdminDashboard';
+import AdminDashboardTest from './components/AdminDashboardTest';
+import MyAppointments from './components/MyAppointments';
 
 
 
@@ -13,14 +15,18 @@ function App() {
         <Router>
             <div>
                 <Routes>
-                    <Route path="/" element={<Registration/>} />
+                    <Route path="/" element={<MyAppointments />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/registration" element={<Registration />} />
-                    <Route path="/book-appointment" element={<AppointmentBooking />} /> {/* Add the new route for appointment booking */}
+                    <Route path="/book-appointment" element={<AppointmentBooking />} />
+                    <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                    <Route path="/admin-dashboardTest" element={<AdminDashboardTest />} />
+                    <Route path="/my-appointment" element={<MyAppointments />} />
                 </Routes>
             </div>
         </Router>
     );
 }
+
 
 export default App;

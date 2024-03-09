@@ -49,7 +49,7 @@ function Registration() {
         e.preventDefault();
         setIsLoading(true);
         try {
-            const response = await axios.post('http://localhost:8090/register', {
+            const response = await axios.post('http://localhost:8091/register', {
                 username,
                 password
             });

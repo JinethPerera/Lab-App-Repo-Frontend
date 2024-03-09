@@ -69,13 +69,26 @@ function Login() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post('http://localhost:8090/login', {
+      const response = await axios.post('http://localhost:8091/login', {
         username,
         password
       });
-      setMessage(response.data);
-      setOpenSnackbar(true);
-      navigate('/book-appointment');
+
+      // Determine the user role from the response
+      const userRole = response.data;
+
+      // Redirect based on the user role
+      if (userRole === 'Admin') {
+        // Redirect to the doctor page
+        navigate('/admin-dashboard');
+      } else if (userRole === 'User') {
+        // Redirect to the book appointment page
+        navigate('/book-appointment');
+      } else {
+        // Handle unexpected response
+        setMessage('Unexpected response from server');
+        setOpenSnackbar(true);
+      }
     } catch (error) {
       setMessage('Login failed: ' + error.message);
       setOpenSnackbar(true);
