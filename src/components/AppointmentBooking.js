@@ -73,8 +73,17 @@ function AppointmentBooking() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    
+    // Assuming you have the patient ID available in your application
+    const patientId = 1; // Replace this with the actual patient ID
+  
     try {
-      const response = await axios.post('http://localhost:8091/appointment/book', appointmentData);
+      const appointmentDataWithPatientId = {
+        ...appointmentData,
+        patientId: patientId
+      };
+  
+      const response = await axios.post('http://localhost:8091/appointment/book', appointmentDataWithPatientId);
       setMessage('Appointment booked successfully!');
       setOpenSnackbar(true);
     } catch (error) {
@@ -84,6 +93,7 @@ function AppointmentBooking() {
     }
     setIsLoading(false);
   };
+  
 
   return (
     <div>

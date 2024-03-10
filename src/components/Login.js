@@ -77,6 +77,8 @@ function Login() {
       // Determine the user role from the response
       const userRole = response.data;
 
+      localStorage.setItem('username', username);
+
       // Redirect based on the user role
       if (userRole === 'Admin') {
         // Redirect to the doctor page
@@ -90,10 +92,16 @@ function Login() {
         setOpenSnackbar(true);
       }
     } catch (error) {
-      setMessage('Login failed: ' + error.message);
+      if (error.response.status === 401) {
+        setMessage('Incorrect username or password');
+      } else {
+        setMessage('Login failed: ' + error.message);
+      }
       setOpenSnackbar(true);
       setLoginFailed(true);
     }
+    
+    
     setIsLoading(false);
   };
 
@@ -157,17 +165,18 @@ function Login() {
             autoHideDuration={6000}
             onClose={handleSnackbarClose}
           >
-            <SnackbarContent
-              style={{
-                backgroundColor: loginFailed ? '#f44336' : '#4caf50',
-              }}
-              message={
-                <span className={classes.message}>
-                  {loginFailed ? <ErrorIcon className={classes.icon} /> : <CheckCircleIcon className={classes.icon} />}
-                  {message}
-                </span>
-              }
-            />
+           <SnackbarContent
+  style={{
+    backgroundColor: loginFailed ? '#f44336' : '#4caf50',
+  }}
+  message={
+    <span className={classes.message}>
+      {loginFailed ? <ErrorIcon className={classes.icon} /> : <CheckCircleIcon className={classes.icon} />}
+      {message}
+    </span>
+  }
+/>
+
           </Snackbar>
         </Box>
       </Container>

@@ -1,4 +1,3 @@
-// Import necessary Bootstrap styles
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -35,71 +34,71 @@ function MyAppointments() {
     const [appointments, setAppointments] = useState([]);
 
     useEffect(() => {
-        fetchAppointments();
+        const username = localStorage.getItem('username');
+        if (username) {
+            fetchAppointments(username);
+        }
     }, []);
 
-    const fetchAppointments = async () => {
+    const fetchAppointments = async (username) => {
         try {
-            const patientId = 123; // Replace with the actual patient ID
-            const response = await axios.get(`http://localhost:8091/appointment/appointments`);
-            console.log('Response Data:', response.data); // Log the response data
+            const response = await axios.get(`http://localhost:8091/appointment/appointments?username=${username}`);
             setAppointments(response.data);
         } catch (error) {
             console.error('Error fetching appointments:', error);
         }
     };
 
-
-  return (
-    <div>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Lab Appointment System
-          </Typography>
-          <Link to="/login" color="inherit" style={{ marginRight: '20px' }}>
-            My Appointments
-          </Link>
-          <Link to="/registration" color="inherit">
-            Register
-          </Link>
-        </Toolbar>
-      </AppBar>
-      <Container maxWidth="md" className={classes.container}>
-        <Box>
-          <h1>My Appointments</h1>
-          <Box className="table-responsive">
-              <table className="table table-striped">
-                  <thead>
-                      <tr>
-                          <th>Patient Name</th>
-                          <th>Contact Information</th>
-                          <th>Date of Birth</th>
-                          <th>Appointment Date and Time</th>
-                          <th>Test Type</th>
-                          <th>Status</th>
-                          <th>Action</th> {/* Add a new column for the button */}
-                      </tr>
-                  </thead>
-                  <tbody>
-                      {appointments.map(appointment => (
-                          <tr key={appointment.id}>
-                              <td>{appointment.patientName}</td>
-                              <td>{appointment.contactInformation}</td>
-                              <td>{appointment.dateOfBirth}</td>
-                              <td>{appointment.appointmentDateTime}</td>
-                              <td>{appointment.testType}</td>
-                              <td>{appointment.status}</td>
-                              <td><button className="btn btn-primary">Pay</button></td> {/* Add the button */}
-                          </tr>
-                      ))}
-                  </tbody>
-              </table>
-          </Box>
-        </Box>
-      </Container>
-    </div>
-  );
+    return (
+        <div>
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="h6" className={classes.title}>
+                        Lab Appointment System
+                    </Typography>
+                    <Link to="/login" color="inherit" style={{ marginRight: '20px' }}>
+                        My Appointments
+                    </Link>
+                    <Link to="/registration" color="inherit">
+                        Register
+                    </Link>
+                </Toolbar>
+            </AppBar>
+            <Container maxWidth="md" className={classes.container}>
+                <Box>
+                    <h1>My Appointments</h1>
+                    <Box className="table-responsive">
+                        <table className="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Patient Name</th>
+                                    <th>Contact Information</th>
+                                    <th>Date of Birth</th>
+                                    <th>Appointment Date and Time</th>
+                                    <th>Test Type</th>
+                                    <th>Status</th>
+                                    <th>Action</th> {/* Add a new column for the button */}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {appointments.map(appointment => (
+                                    <tr key={appointment.id}>
+                                        <td>{appointment.patientName}</td>
+                                        <td>{appointment.contactInformation}</td>
+                                        <td>{appointment.dateOfBirth}</td>
+                                        <td>{appointment.appointmentDateTime}</td>
+                                        <td>{appointment.testType}</td>
+                                        <td>{appointment.status}</td>
+                                        <td><button className="btn btn-primary">Pay</button></td> {/* Add the button */}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </Box>
+                </Box>
+            </Container>
+        </div>
+    );
 }
 
 export default MyAppointments;
