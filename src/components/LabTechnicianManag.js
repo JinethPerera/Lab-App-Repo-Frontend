@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const DoctorForm = () => {
-  const [doctor, setDoctor] = useState({
+const LabTechnicianForm = () => {
+  const [labTechnician, setLabTechnician] = useState({
     name: '',
     specialization: '',
     address: '',
@@ -11,32 +11,32 @@ const DoctorForm = () => {
     password: ''
   });
 
-  const [doctors, setDoctors] = useState([]);
+  const [labTechnicians, setLabTechnicians] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    fetchDoctors();
+    fetchLabTechnicians();
   }, []);
 
-  const fetchDoctors = async () => {
+  const fetchLabTechnicians = async () => {
     try {
-      const response = await axios.get('http://localhost:8091/doctors');
-      setDoctors(response.data);
+      const response = await axios.get('http://localhost:8091/lab-technicians');
+      setLabTechnicians(response.data);
     } catch (error) {
-      console.error('Error fetching doctors:', error);
+      console.error('Error fetching lab technicians:', error);
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setDoctor(prevDoctor => ({
-      ...prevDoctor,
+    setLabTechnician(prevLabTechnician => ({
+      ...prevLabTechnician,
       [name]: value
     }));
   };
 
   const clearForm = () => {
-    setDoctor({
+    setLabTechnician({
       name: '',
       specialization: '',
       address: '',
@@ -49,37 +49,37 @@ const DoctorForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8091/doctors', doctor);
-      console.log('New doctor added:', response.data);
+      const response = await axios.post('http://localhost:8091/lab-technicians', labTechnician);
+      console.log('New lab technician added:', response.data);
       clearForm();
-      fetchDoctors(); // Refresh the doctor list after adding a new one
+      fetchLabTechnicians(); // Refresh the lab technician list after adding a new one
     } catch (error) {
-      console.error('Error adding doctor:', error);
+      console.error('Error adding lab technician:', error);
     }
   };
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8091/doctors/${id}`);
-      fetchDoctors(); // Refresh the doctor list after deletion
+      await axios.delete(`http://localhost:8091/lab-technicians/${id}`);
+      fetchLabTechnicians(); // Refresh the lab technician list after deletion
     } catch (error) {
-      console.error('Error deleting doctor:', error);
+      console.error('Error deleting lab technician:', error);
     }
   };
 
-  const handleEdit = (doc) => {
-    setDoctor({
-      id: doc.id,
-      name: doc.name,
-      specialization: doc.specialization,
-      address: doc.address,
-      phoneNumber: doc.phoneNumber,
-      email: doc.email
+  const handleEdit = (technician) => {
+    setLabTechnician({
+      id: technician.id,
+      name: technician.name,
+      specialization: technician.specialization,
+      address: technician.address,
+      phoneNumber: technician.phoneNumber,
+      email: technician.email
     });
   };
 
-  const filteredDoctors = doctors.filter((doc) => {
-    return doc.name.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredLabTechnicians = labTechnicians.filter((technician) => {
+    return technician.name.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
   return (
@@ -97,7 +97,7 @@ const DoctorForm = () => {
                 <a className="nav-link" href="#">Home</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Doctors</a>
+                <a className="nav-link" href="#">Lab Technicians</a>
               </li>
               {/* Add more navbar items as needed */}
             </ul>
@@ -105,11 +105,11 @@ const DoctorForm = () => {
         </div>
       </nav>
 
-      {/* Doctor Form */}
+      {/* Lab Technician Form */}
       <div className="container mt-5">
         <div className="card">
           <div className="card-header">
-            <h2>Add New Doctor</h2>
+            <h2>Add New Lab Technician</h2>
           </div>
           <div className="card-body">
             <form onSubmit={handleSubmit}>
@@ -120,7 +120,7 @@ const DoctorForm = () => {
                   className="form-control"
                   id="name"
                   name="name"
-                  value={doctor.name}
+                  value={labTechnician.name}
                   onChange={handleChange}
                   required
                 />
@@ -131,7 +131,7 @@ const DoctorForm = () => {
                   className="form-control"
                   id="specialization"
                   name="specialization"
-                  value={doctor.specialization}
+                  value={labTechnician.specialization}
                   onChange={handleChange}
                   required
                 >
@@ -153,7 +153,7 @@ const DoctorForm = () => {
                   className="form-control"
                   id="address"
                   name="address"
-                  value={doctor.address}
+                  value={labTechnician.address}
                   onChange={handleChange}
                   required
                 />
@@ -165,7 +165,7 @@ const DoctorForm = () => {
                   className="form-control"
                   id="phoneNumber"
                   name="phoneNumber"
-                  value={doctor.phoneNumber}
+                  value={labTechnician.phoneNumber}
                   onChange={handleChange}
                   required
                 />
@@ -177,7 +177,7 @@ const DoctorForm = () => {
                   className="form-control"
                   id="email"
                   name="email"
-                  value={doctor.email}
+                  value={labTechnician.email}
                   onChange={handleChange}
                   required
                 />
@@ -188,12 +188,11 @@ const DoctorForm = () => {
                    className="form-control"
                            id="password"
                      name="password"
-                   value={doctor.password}
+                   value={labTechnician.password}
                     onChange={handleChange}
                         required
     />
 </div>
-
               </div>
               <button type="submit" className="btn btn-primary">Submit</button>
             </form>
@@ -205,21 +204,21 @@ const DoctorForm = () => {
       <div className="container mt-3">
         <input
           type="text"
-          placeholder="Search doctors..."
+          placeholder="Search lab technicians..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="form-control"
         />
       </div>
 
-      {/* Doctor Grid View */}
+      {/* Lab Technician Grid View */}
       <div className="container mt-3">
-        <h2>Doctor List</h2>
+        <h2>Lab Technician List</h2>
         <div className="table-responsive">
           <table className="table table-striped table-bordered">
             <thead className="thead-dark">
               <tr>
-                <th>Name</th>
+              <th>Name</th>
                 <th>Specialization</th>
                 <th>Address</th>
                 <th>Phone Number</th>
@@ -229,18 +228,18 @@ const DoctorForm = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredDoctors.map((doc, index) => (
+              {filteredLabTechnicians.map((technician, index) => (
                 <tr key={index}>
-                  <td>{doc.name}</td>
-                  <td>{doc.specialization}</td>
-                  <td>{doc.address}</td>
-                  <td>{doc.phoneNumber}</td>
-                  <td>{doc.email}</td>
-                  <td>{doc.password}</td>
+                  <td>{technician.name}</td>
+                  <td>{technician.specialization}</td>
+                  <td>{technician.address}</td>
+                  <td>{technician.phoneNumber}</td>
+                  <td>{technician.email}</td>
+                  <td>{technician.password}</td>
                   <td>
-                    <button className="btn btn-primary" onClick={() => handleEdit(doc)}>Edit</button>
+                    <button className="btn btn-primary" onClick={() => handleEdit(technician)}>Edit</button>
                     <span style={{ margin: '0 5px' }}></span>
-                    <button className="btn btn-danger" onClick={() => handleDelete(doc.id)}>Delete</button>
+                    <button className="btn btn-danger" onClick={() => handleDelete(technician.id)}>Delete</button>
                   </td>
                 </tr>
               ))}
@@ -252,4 +251,4 @@ const DoctorForm = () => {
   );
 };
 
-export default DoctorForm;
+export default LabTechnicianForm;

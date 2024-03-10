@@ -7,6 +7,8 @@ import AppointmentBooking from './components/AppointmentBooking';
 import AdminDashboard from './components/AdminDashboard';
 import AdminDashboardTest from './components/AdminDashboardTest';
 import MyAppointments from './components/MyAppointments';
+import LabTechnicianManage from './components/LabTechnicianManag';
+
 
 
 
@@ -15,13 +17,15 @@ function App() {
         <Router>
             <div>
                 <Routes>
-                    <Route path="/" element={<Login />} />
+                    <Route path="/" element={<LabTechnicianManage />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/registration" element={<Registration />} />
                     <Route path="/book-appointment" element={<AppointmentBooking />} />
                     <Route path="/admin-dashboard" element={<AdminDashboard />} />
                     <Route path="/admin-dashboardTest" element={<AdminDashboardTest />} />
                     <Route path="/my-appointment" element={<MyAppointments />} />
+                    <Route path="/my-appointment" element={<LabTechnicianManage />} />
+                  
                 </Routes>
             </div>
         </Router>

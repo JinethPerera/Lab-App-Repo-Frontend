@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   gridContainer: {
-    marginTop: theme.spacing(2), // Add margin top to the grid container
+    marginTop: theme.spacing(2), 
   },
   appointmentBox: {
     border: '1px solid #ccc',
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function MyAppointments() {
-    const classes = useStyles(); // Instantiate styles using useStyles hook
+    const classes = useStyles(); 
     const [appointments, setAppointments] = useState([]);
 
     useEffect(() => {
@@ -77,7 +77,7 @@ function MyAppointments() {
                                     <th>Appointment Date and Time</th>
                                     <th>Test Type</th>
                                     <th>Status</th>
-                                    <th>Action</th> {/* Add a new column for the button */}
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -89,7 +89,7 @@ function MyAppointments() {
                                         <td>{appointment.appointmentDateTime}</td>
                                         <td>{appointment.testType}</td>
                                         <td>{appointment.status}</td>
-                                        <td><button className="btn btn-primary">Pay</button></td> {/* Add the button */}
+                                        <td><button className="btn btn-primary">Pay</button></td> 
                                     </tr>
                                 ))}
                             </tbody>
