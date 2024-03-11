@@ -8,7 +8,8 @@ const DoctorForm = () => {
     address: '',
     phoneNumber: '',
     email: '',
-    password: ''
+    password: '',
+    type: ''
   });
 
   const [doctors, setDoctors] = useState([]);
@@ -42,7 +43,8 @@ const DoctorForm = () => {
       address: '',
       phoneNumber: '',
       email: '',
-      password: ''
+      password: '',
+      type: ''
     });
   };
 
@@ -74,7 +76,9 @@ const DoctorForm = () => {
       specialization: doc.specialization,
       address: doc.address,
       phoneNumber: doc.phoneNumber,
-      email: doc.email
+      email: doc.email,
+      password:doc.password,
+      type:doc.type
     });
   };
 
@@ -87,7 +91,7 @@ const DoctorForm = () => {
       {/* Navbar */}
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container">
-          <a className="navbar-brand" href="#">Admin Dashboard</a>
+          <a className="navbar-brand" href="#">Doctor Managment</a>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -97,7 +101,7 @@ const DoctorForm = () => {
                 <a className="nav-link" href="#">Home</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Doctors</a>
+                <a className="nav-link" href="/lab-technician">Lab Tachnicians</a>
               </li>
               {/* Add more navbar items as needed */}
             </ul>
@@ -194,6 +198,24 @@ const DoctorForm = () => {
     />
 </div>
 
+<div className="form-group">
+                <label htmlFor="type">Type</label>
+                <select
+                  className="form-control"
+                  id="type"
+                  name="type"
+                  value={doctor.type}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select type</option>
+                  <option value="DOCTOR">Doctor</option>
+                  <option value="LABTECHNICIAN">Lab Technician</option>
+                  <option value="RICEPTIONIST">Riceptionist</option>
+                  
+                </select>
+              </div>
+
               </div>
               <button type="submit" className="btn btn-primary">Submit</button>
             </form>
@@ -225,6 +247,7 @@ const DoctorForm = () => {
                 <th>Phone Number</th>
                 <th>Email</th>
                 <th>Password</th>
+                <th>Type</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -237,6 +260,7 @@ const DoctorForm = () => {
                   <td>{doc.phoneNumber}</td>
                   <td>{doc.email}</td>
                   <td>{doc.password}</td>
+                  <td>{doc.type}</td>
                   <td>
                     <button className="btn btn-primary" onClick={() => handleEdit(doc)}>Edit</button>
                     <span style={{ margin: '0 5px' }}></span>

@@ -8,7 +8,8 @@ const LabTechnicianForm = () => {
     address: '',
     phoneNumber: '',
     email: '',
-    password: ''
+    password: '',
+    type: ''
   });
 
   const [labTechnicians, setLabTechnicians] = useState([]);
@@ -42,7 +43,8 @@ const LabTechnicianForm = () => {
       address: '',
       phoneNumber: '',
       email: '',
-      password: ''
+      password: '',
+      type: ''
     });
   };
 
@@ -52,7 +54,7 @@ const LabTechnicianForm = () => {
       const response = await axios.post('http://localhost:8091/lab-technicians', labTechnician);
       console.log('New lab technician added:', response.data);
       clearForm();
-      fetchLabTechnicians(); // Refresh the lab technician list after adding a new one
+      fetchLabTechnicians(); 
     } catch (error) {
       console.error('Error adding lab technician:', error);
     }
@@ -61,7 +63,7 @@ const LabTechnicianForm = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:8091/lab-technicians/${id}`);
-      fetchLabTechnicians(); // Refresh the lab technician list after deletion
+      fetchLabTechnicians(); 
     } catch (error) {
       console.error('Error deleting lab technician:', error);
     }
@@ -74,7 +76,10 @@ const LabTechnicianForm = () => {
       specialization: technician.specialization,
       address: technician.address,
       phoneNumber: technician.phoneNumber,
-      email: technician.email
+      email: technician.email,
+      password:technician.password,
+      type:technician.type
+
     });
   };
 
@@ -87,19 +92,19 @@ const LabTechnicianForm = () => {
       {/* Navbar */}
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container">
-          <a className="navbar-brand" href="#">Admin Dashboard</a>
+          <a className="navbar-brand" href="#">Lab Technician Managment</a>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                <a className="nav-link" href="#">Home</a>
+                <a className="nav-link" href="/admin-dashboard">Doctors</a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">Lab Technicians</a>
               </li>
-              {/* Add more navbar items as needed */}
+              {}
             </ul>
           </div>
         </div>
@@ -192,6 +197,23 @@ const LabTechnicianForm = () => {
                     onChange={handleChange}
                         required
     />
+    <div className="form-group">
+                <label htmlFor="type">Type</label>
+                <select
+                  className="form-control"
+                  id="type"
+                  name="type"
+                  value={LabTechnicianForm.type}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select type</option>
+                  <option value="DOCTOR">Doctor</option>
+                  <option value="LABTECHNICIAN">Lab Technician</option>
+                  <option value="RICEPTIONIST">Riceptionist</option>
+                  
+                </select>
+              </div>
 </div>
               </div>
               <button type="submit" className="btn btn-primary">Submit</button>
@@ -224,6 +246,8 @@ const LabTechnicianForm = () => {
                 <th>Phone Number</th>
                 <th>Email</th>
                 <th>Password</th>
+                <th>Type</th>
+
                 <th>Actions</th>
               </tr>
             </thead>
@@ -236,6 +260,7 @@ const LabTechnicianForm = () => {
                   <td>{technician.phoneNumber}</td>
                   <td>{technician.email}</td>
                   <td>{technician.password}</td>
+                  <td>{technician.type}</td>
                   <td>
                     <button className="btn btn-primary" onClick={() => handleEdit(technician)}>Edit</button>
                     <span style={{ margin: '0 5px' }}></span>
