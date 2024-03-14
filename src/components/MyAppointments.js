@@ -32,11 +32,13 @@ const useStyles = makeStyles((theme) => ({
 function MyAppointments() {
     const classes = useStyles(); 
     const [appointments, setAppointments] = useState([]);
+    const [testResults, setTestResults] = useState([]);
 
     useEffect(() => {
         const username = localStorage.getItem('username');
         if (username) {
             fetchAppointments(username);
+            fetchTestResults(username);
         }
     }, []);
 
@@ -49,12 +51,21 @@ function MyAppointments() {
         }
     };
 
+    const fetchTestResults = async (patientName) => {
+        try {
+            const response = await axios.get(`http://localhost:8091/testResults?patientName=${patientName}`);
+            setTestResults(response.data);
+        } catch (error) {
+            console.error('Error fetching test results:', error);
+        }
+    };
+
     return (
         <div>
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" className={classes.title}>
-                        Lab Appointment System
+                    ABC Laboratories Appointment System 
                     </Typography>
                     <Link to="/login" color="inherit" style={{ marginRight: '20px' }}>
                         My Appointments
@@ -90,6 +101,35 @@ function MyAppointments() {
                                         <td>{appointment.testType}</td>
                                         <td>{appointment.status}</td>
                                         <td><button className="btn btn-primary">Pay</button></td> 
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </Box>
+                    <h1>My Test Results</h1>
+                    <Box className="table-responsive">
+                        <table className="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Test Date</th>
+                                    <th>Test Type</th>
+                                    <th>Test Result</th>
+                                    <th>Lab Technician</th>
+                                    <th>Test Method</th>
+                                    <th>Sample Type</th>
+                                    <th>Additional Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {testResults.map(testResult => (
+                                    <tr key={testResult.id}>
+                                        <td>{testResult.testDate}</td>
+                                        <td>{testResult.testType}</td>
+                                        <td>{testResult.testResult}</td>
+                                        <td>{testResult.labTechnician}</td>
+                                        <td>{testResult.testMethod}</td>
+                                        <td>{testResult.sampleType}</td>
+                                        <td>{testResult.additionalComments}</td>
                                     </tr>
                                 ))}
                             </tbody>

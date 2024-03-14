@@ -53,19 +53,26 @@ function LabTechnicianAppointments() {
 
     return (
         <div>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6" className={classes.title}>
-                        Lab Appointment System
-                    </Typography>
-                    <Link to="/login" color="inherit" style={{ marginRight: '20px' }}>
-                        My Appointments
-                    </Link>
-                    <Link to="/registration" color="inherit">
-                        Register
-                    </Link>
-                </Toolbar>
-            </AppBar>
+        {/* Navbar */}
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div className="container">
+            <a className="navbar-brand" href="#">Doctor Managment</a>
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarNav">
+              <ul className="navbar-nav ml-auto">
+                <li className="nav-item">
+                  <a className="nav-link" href="#">Home</a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" href="/lab-technician">Lab Tachnicians</a>
+                </li>
+                {/* Add more navbar items as needed */}
+              </ul>
+            </div>
+          </div>
+        </nav>
             <Container maxWidth="md" className={classes.container}>
                 <Box>
                     <h1>Appointments</h1>
@@ -90,7 +97,10 @@ function LabTechnicianAppointments() {
                                     <td className={classes.td}>{appointment.appointmentDateTime}</td>
                                     <td className={classes.td}>{appointment.testType}</td>
                                     <td className={classes.td}>{appointment.status}</td>
-                                    <td className={classes.td}><button className="btn btn-primary">Pay</button></td> 
+                                    <td className={classes.td}>
+    <Link to="/lab-result" className="btn btn-primary">Test</Link>
+</td>
+
                                 </tr>
                             ))}
                         </tbody>

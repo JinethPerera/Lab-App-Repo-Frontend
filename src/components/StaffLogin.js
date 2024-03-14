@@ -7,17 +7,17 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import { Link, Navigate, Redirect } from 'react-router-dom'; 
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    height: '100vh',
+    marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -27,19 +27,15 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(1),
     boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.1)',
     backgroundColor: '#ffffff',
-    marginTop: theme.spacing(8),
     width: '100%',
     maxWidth: '400px',
   },
   form: {
-    width: '100%',
+    width: '100%', 
     marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-  },
-  title: {
-    flexGrow: 1,
   },
   message: {
     display: 'flex',
@@ -48,38 +44,21 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: theme.spacing(1),
   },
-  linkButton: {
-    textDecoration: 'none',
-    marginRight: theme.spacing(3),
-    borderRadius: '20px', 
-    padding: theme.spacing(1, 2), 
-    backgroundColor: '#3f51b5', 
-    color: '#fff', 
-    '&:hover': {
-      backgroundColor: '#303f9f', 
-    },
-  },
-  textField: {
-    marginBottom: theme.spacing(2), 
-    '&:hover': {
-      transform: 'scale(1.02)', 
-    },
-    '& .Mui-focused': {
-      transform: 'scale(1.02)', 
-    },
+  title: {
+    flexGrow: 1,
   },
 }));
 
-function Login() {
+function TechnicianLogin() {
   const classes = useStyles();
-  const navigate = useNavigate();
 
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [loginFailed, setLoginFailed] = useState(false);
+  const [redirectToAppointments, setRedirectToAppointments] = useState(false); 
 
   const handleSnackbarClose = () => {
     setOpenSnackbar(false);
@@ -89,35 +68,26 @@ function Login() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post('http://localhost:8091/login', {
-        username,
-        password,
+      const response = await axios.post('http://localhost:8091/lab-technician/login', {
+        email,
+        password
       });
 
-      const userRole = response.data;
-
-      localStorage.setItem('username', username);
-
-      if (userRole === 'Admin') {
-        navigate('/admin-dashboard');
-      } else if (userRole === 'User') {
-        navigate('/book-appointment');
-      } else {
-        setMessage('Unexpected response from server');
-        setOpenSnackbar(true);
-      }
+      
+      localStorage.setItem('email', email);
+      localStorage.setItem('isLoggedIn', true);
+      setRedirectToAppointments(true); 
     } catch (error) {
-      if (error.response.status === 401) {
-        setMessage('Incorrect username or password');
-      } else {
-        setMessage('Login failed: ' + error.message);
-      }
+      setMessage('Incorrect email or password');
       setOpenSnackbar(true);
       setLoginFailed(true);
     }
-
     setIsLoading(false);
   };
+
+  if (redirectToAppointments) {
+    return <Navigate to="/technician-view" />; 
+  }
 
   return (
     <div>
@@ -126,33 +96,31 @@ function Login() {
           <Typography variant="h6" className={classes.title}>
             ABC Laboratories Appointment System
           </Typography>
-          <RouterLink to="/registration" className={classes.linkButton}>
-            Register
-          </RouterLink>
-          <RouterLink to="/contact" className={classes.linkButton}>
-            Contact
-          </RouterLink>
-          <RouterLink to="/staff-login" className={classes.linkButton}>
-            Staff Login
-          </RouterLink>
+          <Link to="/login" color="inherit" style={{ marginRight: '20px' }}>
+            Patient Login
+          </Link>
+          <Link to="/technician-login" color="inherit" style={{ marginRight: '20px' }}>
+            Technician Login
+          </Link>
+          <Link to="/admin-login" color="inherit">
+            Admin Login
+          </Link>
         </Toolbar>
       </AppBar>
       <Container component="main" maxWidth="xs" className={classes.container}>
         <Box className={classes.box}>
           <Typography component="h1" variant="h5" align="center">
-            Login
+            Technician Login
           </Typography>
           <form className={classes.form} onSubmit={handleSubmit}>
             <TextField
-            id="outlined-basic" 
               variant="outlined"
               margin="normal"
               required
               fullWidth
-              label="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className={classes.textField}
+              label="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               variant="outlined"
@@ -163,7 +131,6 @@ function Login() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className={classes.textField}
             />
             <Button
               type="submit"
@@ -203,4 +170,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default TechnicianLogin;

@@ -9,7 +9,8 @@ import AdminDashboardTest from './components/AdminDashboardTest';
 import MyAppointments from './components/MyAppointments';
 import LabTechnicianManag from './components/LabTechnicianManag';
 import TechnicianAppView from './components/TechnicianAppView';
-
+import LabTestResult from './components/LabTestResult';
+import StaffLogin from './components/StaffLogin';
 
 
 
@@ -20,7 +21,7 @@ function App() {
         <Router>
             <div>
                 <Routes>
-                    <Route path="/" element={<TechnicianAppView/>} />
+                    <Route path="/" element={<Login />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/registration" element={<Registration />} />
                     <Route path="/book-appointment" element={<AppointmentBooking />} />
@@ -29,6 +30,10 @@ function App() {
                     <Route path="/my-appointment" element={<MyAppointments />} />
                     <Route path="/lab-technician" element={<LabTechnicianManag />} />
                     <Route path="/technician-view" element={<TechnicianAppView />} />
+                    <Route path="/lab-result" element={<LabTestResult />} />
+                    <Route path="/staff-login" element={<StaffLogin />} />
+                    
+
                    
                    
                   

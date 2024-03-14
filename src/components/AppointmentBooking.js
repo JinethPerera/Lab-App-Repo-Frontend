@@ -100,7 +100,7 @@ function AppointmentBooking() {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            Lab Appointment System
+            ABC Laboratories Appointment System
           </Typography>
           <Link to="/my-appointment" color="inherit" style={{ marginRight: '20px' }}>
             My Appointments

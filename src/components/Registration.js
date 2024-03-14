@@ -54,10 +54,10 @@ function Registration() {
                 password
             });
             console.log(response.data);
-            // Handle successful registration (e.g., redirect to login)
+         
         } catch (error) {
             console.error('Registration failed:', error.message);
-            // Handle registration error (e.g., show an error message)
+         
         }
         setIsLoading(false);
     };
@@ -67,7 +67,7 @@ function Registration() {
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" className={classes.title}>
-                        Lab Appointment System
+                    ABC Laboratories Appointment System
                     </Typography>
                     <Link href="/login" color="inherit" style={{ marginRight: '20px' }}>
                        Login
