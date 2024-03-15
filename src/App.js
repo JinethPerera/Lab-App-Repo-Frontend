@@ -11,6 +11,9 @@ import LabTechnicianManag from './components/LabTechnicianManag';
 import TechnicianAppView from './components/TechnicianAppView';
 import LabTestResult from './components/LabTestResult';
 import StaffLogin from './components/StaffLogin';
+import AdminAppView from './components/AdminAppView';
+import Testing from './components/Testing';
+
 
 
 
@@ -32,6 +35,10 @@ function App() {
                     <Route path="/technician-view" element={<TechnicianAppView />} />
                     <Route path="/lab-result" element={<LabTestResult />} />
                     <Route path="/staff-login" element={<StaffLogin />} />
+                    <Route path="/adminapp-view" element={<AdminAppView />} />
+                    <Route path="/testing" element={<Testing />} />
+
+                  
                     
 
                    

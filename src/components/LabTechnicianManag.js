@@ -21,13 +21,13 @@ const LabTechnicianForm = () => {
 
   const fetchLabTechnicians = async () => {
     try {
-      const response = await axios.get('http://localhost:8091/lab-technicians');
+      const response = await axios.get('http://localhost:8091/lab-technicians/lab-technicians');
       setLabTechnicians(response.data);
     } catch (error) {
       console.error('Error fetching lab technicians:', error);
     }
   };
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLabTechnician(prevLabTechnician => ({
@@ -103,6 +103,9 @@ const LabTechnicianForm = () => {
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">Lab Technicians</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/adminapp-view">Appointmens</a>
               </li>
               {}
             </ul>

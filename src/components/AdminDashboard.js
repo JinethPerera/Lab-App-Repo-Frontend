@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const DoctorForm = () => {
+  const navigate = useNavigate(); // Initialize navigate hook
   const [doctor, setDoctor] = useState({
     name: '',
     specialization: '',
@@ -86,6 +88,11 @@ const DoctorForm = () => {
     return doc.name.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
+  const handleLogout = () => {
+    // Handle logout logic here
+    navigate('/staff-login'); // Redirect to staff login page
+  };
+
   return (
     <div>
       {/* Navbar */}
@@ -103,7 +110,13 @@ const DoctorForm = () => {
               <li className="nav-item">
                 <a className="nav-link" href="/lab-technician">Lab Tachnicians</a>
               </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/adminapp-view">Appointmens</a>
+              </li>
               {/* Add more navbar items as needed */}
+              <li className="nav-item">
+                <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
+              </li>
             </ul>
           </div>
         </div>
@@ -185,20 +198,20 @@ const DoctorForm = () => {
                   onChange={handleChange}
                   required
                 />
-                <div className="form-group">
+              </div>
+              <div className="form-group">
                 <label htmlFor="password">Password</label>
-                        <input
-                       type="password"
-                   className="form-control"
-                           id="password"
-                     name="password"
-                   value={doctor.password}
-                    onChange={handleChange}
-                        required
-    />
-</div>
-
-<div className="form-group">
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password"
+                  name="password"
+                  value={doctor.password}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
                 <label htmlFor="type">Type</label>
                 <select
                   className="form-control"
@@ -211,11 +224,8 @@ const DoctorForm = () => {
                   <option value="">Select type</option>
                   <option value="DOCTOR">Doctor</option>
                   <option value="LABTECHNICIAN">Lab Technician</option>
-                  <option value="RICEPTIONIST">Riceptionist</option>
-                  
+                  <option value="RECEPTIONIST">Receptionist</option>
                 </select>
-              </div>
-
               </div>
               <button type="submit" className="btn btn-primary">Submit</button>
             </form>
@@ -271,6 +281,7 @@ const DoctorForm = () => {
             </tbody>
           </table>
         </div>
+        
       </div>
     </div>
   );

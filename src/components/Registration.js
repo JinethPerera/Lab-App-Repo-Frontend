@@ -37,86 +37,103 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  link: {
+    marginRight: theme.spacing(4), // Adjust the spacing between links
+    color: 'inherit',
+    textDecoration: 'none',
+    '&:hover': {
+      color: theme.palette.primary.main, // Change color on hover
+    },
+  },
 }));
 
 function Registration() {
-    const classes = useStyles();
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+  const classes = useStyles();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-        try {
-            const response = await axios.post('http://localhost:8091/register', {
-                username,
-                password
-            });
-            console.log(response.data);
-         
-        } catch (error) {
-            console.error('Registration failed:', error.message);
-         
-        }
-        setIsLoading(false);
-    };
-    
-    return (
-        <div>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6" className={classes.title}>
-                    ABC Laboratories Appointment System
-                    </Typography>
-                    <Link href="/login" color="inherit" style={{ marginRight: '20px' }}>
-                       Login
-                    </Link>
-                    <Link href="/contact" color="inherit">
-                        Contact
-                    </Link>
-                </Toolbar>
-            </AppBar>
-            <Container component="main" maxWidth="xs" className={classes.container}>
-                <Box className={classes.box}>
-                    <Typography component="h1" variant="h5" align="center">
-                        Registration
-                    </Typography>
-                    <form className={classes.form} onSubmit={handleSubmit}>
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            label="Username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            label="Password"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                            disabled={isLoading}
-                        >
-                            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Register'}
-                        </Button>
-                    </form>
-                </Box>
-            </Container>
-        </div>
-    );
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      const response = await axios.post('http://localhost:8091/register', {
+        username,
+        password,
+        email
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error('Registration failed:', error.message);
+    }
+    setIsLoading(false);
+  };
+
+  return (
+    <div>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" className={classes.title}>
+            ABC Laboratories Appointment System
+          </Typography>
+          <Link href="/login" className={classes.link}>
+            Login
+          </Link>
+          <Link href="/contact" className={classes.link}>
+            Contact
+          </Link>
+        </Toolbar>
+      </AppBar>
+      <Container component="main" maxWidth="xs" className={classes.container}>
+        <Box className={classes.box}>
+          <Typography component="h1" variant="h5" align="center">
+            Registration
+          </Typography>
+          <form className={classes.form} onSubmit={handleSubmit}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              label="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              label="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              disabled={isLoading}
+            >
+              {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Register'}
+            </Button>
+          </form>
+        </Box>
+      </Container>
+    </div>
+  );
 }
 
 export default Registration;

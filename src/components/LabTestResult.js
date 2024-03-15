@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Modal from 'react-bootstrap/Modal';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -19,10 +21,26 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  navbar: {
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 function TestResultForm() {
     const classes = useStyles(); 
+    const navigate = useNavigate(); 
+    const [loggedIn, setLoggedIn] = useState(true); 
+    const [showLogoutMessage, setShowLogoutMessage] = useState(false);
+
+    const handleLogout = () => {
+        setLoggedIn(false);
+        setShowLogoutMessage(true);
+        setTimeout(() => {
+            navigate('/staff-login');
+        }, 1000); 
+    };
+
+    const handleClose = () => setShowLogoutMessage(false);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -62,10 +80,9 @@ function TestResultForm() {
 
     return (
         <div>
-            {/* Navbar */}
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+            <nav className={`navbar navbar-expand-lg navbar-dark bg-dark ${classes.navbar}`}>
                 <div className="container">
-                    <a className="navbar-brand" href="#">Doctor Managment</a>
+                    <a className="navbar-brand" href="#">Lab Technician</a>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -75,9 +92,13 @@ function TestResultForm() {
                                 <a className="nav-link" href="#">Home</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="/lab-technician">Lab Tachnicians</a>
+                                <a className="nav-link" href="/technician-view">Appointment Testing</a>
                             </li>
-                            {/* Add more navbar items as needed */}
+                            {loggedIn && (
+                                <li className="nav-item">
+                                    <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
+                                </li>
+                            )}
                         </ul>
                     </div>
                 </div>
@@ -178,6 +199,18 @@ function TestResultForm() {
                     </Button>
                 </form>
             </Container>
+
+            <Modal show={showLogoutMessage} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Logout</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>You have successfully logged out.</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }
