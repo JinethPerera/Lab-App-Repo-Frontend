@@ -109,6 +109,7 @@ function Registration() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+            
             />
             <TextField
               variant="outlined"

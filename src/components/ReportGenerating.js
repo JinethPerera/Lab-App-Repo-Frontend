@@ -110,20 +110,10 @@ function MyAppointments() {
     setShowPaymentForm(!showPaymentForm);
   };
 
-  const handleGenerateReport = async () => {
-    try {
-        const patientName = localStorage.getItem('username'); 
-        const response = await axios.get(`http://localhost:8091/appointment/report?patientName=${patientName}`, {
-            responseType: 'arraybuffer',
-        });
-        const blob = new Blob([response.data], { type: 'application/pdf' });
-        const url = window.URL.createObjectURL(blob);
-        window.open(url);
-    } catch (error) {
-        console.error('Error generating report:', error);
-    }
-};
-
+  const handleGenerateReports = () => {
+    // Implement functionality for generating reports
+    console.log('Generating reports...');
+  };
 
   return (
     <div>
@@ -166,44 +156,28 @@ function MyAppointments() {
                     <td>{appointment.testType}</td>
                     <td>{appointment.status}</td>
                     <td>
-                      <button className="btn btn-primary" onClick={togglePaymentForm}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={togglePaymentForm}
+                        disabled={appointment.status === 'paid'}
+                      >
                         Pay
-                      </button>
+                      </Button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </Box>
-          <h1>My Test Results</h1>
-          <Box className="table-responsive">
-            <table className="table table-striped">
-              <thead>
-                <tr>
-                  <th>Test Date</th>
-                  <th>Test Type</th>
-                  <th>Test Result</th>
-                  <th>Lab Technician</th>
-                  <th>Test Method</th>
-                  <th>Sample Type</th>
-                  <th>Additional Comments</th>
-                </tr>
-              </thead>
-              <tbody>
-                {testResults.map((testResult) => (
-                  <tr key={testResult.id}>
-                    <td>{testResult.testDate}</td>
-                    <td>{testResult.testType}</td>
-                    <td>{testResult.testResult}</td>
-                    <td>{testResult.labTechnician}</td>
-                    <td>{testResult.testMethod}</td>
-                    <td>{testResult.sampleType}</td>
-                    <td>{testResult.additionalComments}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </Box>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleGenerateReports}
+            style={{ marginTop: '20px' }}
+          >
+            Generate Reports
+          </Button>
           <Box
             className={`${classes.paymentFormContainer} ${
               showPaymentForm ? classes.paymentFormContainerOpen : ''
@@ -239,9 +213,6 @@ function MyAppointments() {
               </Button>
             </form>
           </Box>
-          <Button onClick={handleGenerateReport} variant="contained" color="primary">
-            Generate Report
-          </Button>
         </Box>
       </Container>
     </div>

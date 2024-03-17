@@ -13,6 +13,7 @@ import LabTestResult from './components/LabTestResult';
 import StaffLogin from './components/StaffLogin';
 import AdminAppView from './components/AdminAppView';
 import Testing from './components/Testing';
+import ReportGenerating from './components/ReportGenerating';
 
 
 
@@ -37,6 +38,7 @@ function App() {
                     <Route path="/staff-login" element={<StaffLogin />} />
                     <Route path="/adminapp-view" element={<AdminAppView />} />
                     <Route path="/testing" element={<Testing />} />
+                    <Route path="/report-generating" element={<ReportGenerating />} />
 
                   
                     
