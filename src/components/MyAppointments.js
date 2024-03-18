@@ -47,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     marginBottom: theme.spacing(2),
   },
+  generateReportButton: {
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 function MyAppointments() {
@@ -112,7 +115,7 @@ function MyAppointments() {
 
   const handleGenerateReport = async () => {
     try {
-        const patientName = localStorage.getItem('username'); 
+        const patientName = localStorage.getItem('username'); // Get the logged-in patientName
         const response = await axios.get(`http://localhost:8091/appointment/report?patientName=${patientName}`, {
             responseType: 'arraybuffer',
         });
@@ -122,8 +125,7 @@ function MyAppointments() {
     } catch (error) {
         console.error('Error generating report:', error);
     }
-};
-
+  };
 
   return (
     <div>
@@ -175,6 +177,9 @@ function MyAppointments() {
               </tbody>
             </table>
           </Box>
+          <Button onClick={handleGenerateReport} variant="contained" color="primary" className={classes.generateReportButton}>
+            Generate Report
+          </Button>
           <h1>My Test Results</h1>
           <Box className="table-responsive">
             <table className="table table-striped">
@@ -239,9 +244,6 @@ function MyAppointments() {
               </Button>
             </form>
           </Box>
-          <Button onClick={handleGenerateReport} variant="contained" color="primary">
-            Generate Report
-          </Button>
         </Box>
       </Container>
     </div>

@@ -10,6 +10,11 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Link from '@material-ui/core/Link';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -53,6 +58,7 @@ function Registration() {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -64,10 +70,15 @@ function Registration() {
         email
       });
       console.log(response.data);
+      setOpenDialog(true); // Open dialog on successful registration
     } catch (error) {
       console.error('Registration failed:', error.message);
     }
     setIsLoading(false);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   return (
@@ -133,6 +144,19 @@ function Registration() {
           </form>
         </Box>
       </Container>
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Registration Successful</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            You have successfully registered to the system.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary" autoFocus>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

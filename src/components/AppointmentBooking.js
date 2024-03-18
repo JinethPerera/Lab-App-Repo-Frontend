@@ -16,7 +16,10 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import MenuItem from '@material-ui/core/MenuItem';
-
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -60,6 +63,8 @@ function AppointmentBooking() {
   const [message, setMessage] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [bookingFailed, setBookingFailed] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState('');
 
   const handleSnackbarClose = () => {
     setOpenSnackbar(false);
@@ -73,16 +78,34 @@ function AppointmentBooking() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
+
+    for (const key in appointmentData) {
+      if (appointmentData[key] === '') {
+        setDialogMessage('Please fill in all fields.');
+        setOpenDialog(true);
+        setIsLoading(false);
+        return;
+      }
+    }
+
+    // Check if date is chosen
+    if (!appointmentData.appointmentDateTime) {
+      setDialogMessage('Please choose a date.');
+      setOpenDialog(true);
+      setIsLoading(false);
+      return;
+    }
+
     
-    // Assuming you have the patient ID available in your application
-    const patientId = 1; // Replace this with the actual patient ID
-  
+    const patientId = 1; 
+
     try {
       const appointmentDataWithPatientId = {
         ...appointmentData,
         patientId: patientId
       };
-  
+
       const response = await axios.post('http://localhost:8091/appointment/book', appointmentDataWithPatientId);
       setMessage('Appointment booked successfully!');
       setOpenSnackbar(true);
@@ -93,7 +116,10 @@ function AppointmentBooking() {
     }
     setIsLoading(false);
   };
-  
+
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+  };
 
   return (
     <div>
@@ -123,7 +149,7 @@ function AppointmentBooking() {
               fullWidth
               label="Patient Name"
               name="patientName"
-              value={appointmentData.patientName ||""}
+              value={appointmentData.patientName || ""}
               onChange={handleChange}
             />
             <TextField
@@ -133,7 +159,7 @@ function AppointmentBooking() {
               fullWidth
               label="Contact Information"
               name="contactInformation"
-              value={appointmentData.contactInformation ||""}
+              value={appointmentData.contactInformation || ""}
               onChange={handleChange}
             />
             <TextField
@@ -144,7 +170,7 @@ function AppointmentBooking() {
               label="Date of Birth"
               type="date"
               name="dateOfBirth"
-              value={appointmentData.dateOfBirth ||""}
+              value={appointmentData.dateOfBirth || ""}
               onChange={handleChange}
             />
             <TextField
@@ -155,7 +181,7 @@ function AppointmentBooking() {
               label="Appointment Date and Time"
               type="datetime-local"
               name="appointmentDateTime"
-              value={appointmentData.appointmentDateTime ||""}
+              value={appointmentData.appointmentDateTime || ""}
               onChange={handleChange}
             />
             
@@ -166,7 +192,7 @@ function AppointmentBooking() {
               fullWidth
               label="Test Type"
               name="testType"
-              value={appointmentData.testType ||""}
+              value={appointmentData.testType || ""}
               onChange={handleChange}
             />
             <TextField
@@ -176,7 +202,7 @@ function AppointmentBooking() {
               fullWidth
               label="Status"
               name="status"
-              value={appointmentData.status ||""}
+              value={appointmentData.status || ""}
               onChange={handleChange}
               select
             >
@@ -216,6 +242,24 @@ function AppointmentBooking() {
               }
             />
           </Snackbar>
+          <Dialog
+            open={openDialog}
+            onClose={handleDialogClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Error"}</DialogTitle>
+            <DialogContent>
+              <Typography variant="body1" color="error">
+                {dialogMessage}
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleDialogClose} color="primary">
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Box>
       </Container>
     </div>

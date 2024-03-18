@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Modal from 'react-bootstrap/Modal';
 
 const LabTechnicianForm = () => {
   const [labTechnician, setLabTechnician] = useState({
@@ -14,6 +15,8 @@ const LabTechnicianForm = () => {
 
   const [labTechnicians, setLabTechnicians] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [loggedIn, setLoggedIn] = useState(true); 
+  const [showLogoutMessage, setShowLogoutMessage] = useState(false);
 
   useEffect(() => {
     fetchLabTechnicians();
@@ -77,9 +80,8 @@ const LabTechnicianForm = () => {
       address: technician.address,
       phoneNumber: technician.phoneNumber,
       email: technician.email,
-      password:technician.password,
-      type:technician.type
-
+      password: technician.password,
+      type: technician.type
     });
   };
 
@@ -87,12 +89,25 @@ const LabTechnicianForm = () => {
     return technician.name.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
+  const handleLogout = () => {
+    setLoggedIn(false);
+    setShowLogoutMessage(true);
+  };
+  
+  const handleClose = () => {
+    setShowLogoutMessage(false);
+    setTimeout(() => {
+      window.location.href = '/staff-login';
+    }, 500);
+  };
+
+ 
   return (
     <div>
       {/* Navbar */}
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container">
-          <a className="navbar-brand" href="#">Lab Technician Managment</a>
+          <a className="navbar-brand" href="#">Lab Technician Management</a>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -105,9 +120,12 @@ const LabTechnicianForm = () => {
                 <a className="nav-link" href="#">Lab Technicians</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/adminapp-view">Appointmens</a>
+                <a className="nav-link" href="/adminapp-view">Appointments</a>
               </li>
-              {}
+              {/* Logout Button */}
+              <li className="nav-item">
+                <button className="btn btn-danger" onClick={() => setShowLogoutMessage(true)}>Logout</button>
+              </li>
             </ul>
           </div>
         </div>
@@ -189,35 +207,34 @@ const LabTechnicianForm = () => {
                   onChange={handleChange}
                   required
                 />
-                <div className="form-group">
+              </div>
+              <div className="form-group">
                 <label htmlFor="password">Password</label>
-                        <input
-                       type="password"
-                   className="form-control"
-                           id="password"
-                     name="password"
-                   value={labTechnician.password}
-                    onChange={handleChange}
-                        required
-    />
-    <div className="form-group">
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password"
+                  name="password"
+                  value={labTechnician.password}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
                 <label htmlFor="type">Type</label>
                 <select
                   className="form-control"
                   id="type"
                   name="type"
-                  value={LabTechnicianForm.type}
+                  value={labTechnician.type}
                   onChange={handleChange}
                   required
                 >
                   <option value="">Select type</option>
                   <option value="DOCTOR">Doctor</option>
                   <option value="LABTECHNICIAN">Lab Technician</option>
-                  <option value="RICEPTIONIST">Riceptionist</option>
-                  
+                  <option value="RECEPTIONIST">Receptionist</option>
                 </select>
-              </div>
-</div>
               </div>
               <button type="submit" className="btn btn-primary">Submit</button>
             </form>
@@ -243,14 +260,13 @@ const LabTechnicianForm = () => {
           <table className="table table-striped table-bordered">
             <thead className="thead-dark">
               <tr>
-              <th>Name</th>
+                <th>Name</th>
                 <th>Specialization</th>
                 <th>Address</th>
                 <th>Phone Number</th>
                 <th>Email</th>
                 <th>Password</th>
                 <th>Type</th>
-
                 <th>Actions</th>
               </tr>
             </thead>
@@ -275,6 +291,19 @@ const LabTechnicianForm = () => {
           </table>
         </div>
       </div>
+
+      {/* Logout Modal */}
+      <Modal show={showLogoutMessage} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Logout</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>You have successfully logged out.</Modal.Body>
+        <Modal.Footer>
+          <button className="btn btn-secondary" onClick={handleClose}>
+            Close
+          </button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

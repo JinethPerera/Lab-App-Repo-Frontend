@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Link } from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -25,22 +26,27 @@ const useStyles = makeStyles((theme) => ({
   card: {
     marginBottom: theme.spacing(2),
     width: '30%', // Adjust as needed
-    minWidth: 300, // Minimum width for each card
-    backgroundColor: '#3498db', // Card background color (blue color)
-    boxShadow: '0 4px 8px rgba(0,0,0,0.1)', // Card shadow
-    transition: 'transform 0.3s ease', // Animation transition
+    minWidth: 300, 
+    backgroundColor: '#3498db', 
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)', 
+    transition: 'transform 0.3s ease', 
     '&:hover': {
-      transform: 'scale(1.05)', // Scale up on hover
+      transform: 'scale(1.05)', 
     },
   },
   cardContent: {
     padding: theme.spacing(2),
+  },
+  navbar: {
+    marginBottom: theme.spacing(2),
   },
 }));
 
 function AdminAppointments() {
     const classes = useStyles();
     const [appointments, setAppointments] = useState([]);
+    const [loggedIn, setLoggedIn] = useState(true); 
+    const [showLogoutMessage, setShowLogoutMessage] = useState(false);
 
     useEffect(() => {
         fetchAppointments();
@@ -55,28 +61,52 @@ function AdminAppointments() {
         }
     };
 
+    const handleLogout = () => {
+        setLoggedIn(false);
+        setShowLogoutMessage(true);
+        setTimeout(() => {
+            window.location.href = '/staff-login';
+        }, 1000); 
+    };
+
+    const handleClose = () => setShowLogoutMessage(false);
+
+    const handleUpdate = (id) => {
+        console.log(`Update appointment with ID: ${id}`);
+        // Implement your update logic here
+    };
+
+    const handleDelete = (id) => {
+        console.log(`Delete appointment with ID: ${id}`);
+        // Implement your delete logic here
+    };
+
     return (
         <div>
-        {/* Navbar */}
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          <div className="container">
-            <a className="navbar-brand" href="#">Doctor Managment</a>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarNav">
-              <ul className="navbar-nav ml-auto">
-                <li className="nav-item">
-                  <a className="nav-link" href="#">Home</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="/lab-technician">Lab Tachnicians</a>
-                </li>
-                {/* Add more navbar items as needed */}
-              </ul>
-            </div>
-          </div>
-        </nav>
+            <nav className={`navbar navbar-expand-lg navbar-dark bg-dark ${classes.navbar}`}>
+                <div className="container">
+                    <a className="navbar-brand" href="#">Doctor Managment</a>
+                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <div className="collapse navbar-collapse" id="navbarNav">
+                        <ul className="navbar-nav ml-auto">
+                            <li className="nav-item">
+                                <a className="nav-link" href="#">Home</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="/lab-technician">Lab Tachnicians</a>
+                            </li>
+                            {loggedIn && (
+                                <li className="nav-item">
+                                    <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
+                                </li>
+                            )}
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
             <Container maxWidth="md" className={classes.container}>
                 <Box>
                     <h1>Appointments</h1>
@@ -102,8 +132,11 @@ function AdminAppointments() {
                                     <Typography color="textSecondary">
                                         Status: {appointment.status}
                                     </Typography>
-                                    <Button component={Link} to="/lab-result" variant="contained" color="primary">
-                                        Test
+                                    <Button variant="contained" color="primary" onClick={() => handleUpdate(appointment.id)}>
+                                        Update
+                                    </Button>
+                                    <Button variant="contained" color="secondary" onClick={() => handleDelete(appointment.id)}>
+                                        Delete
                                     </Button>
                                 </CardContent>
                             </Card>
@@ -111,6 +144,18 @@ function AdminAppointments() {
                     </div>
                 </Box>
             </Container>
+
+            <Modal show={showLogoutMessage} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Logout</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>You have successfully logged out.</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }
