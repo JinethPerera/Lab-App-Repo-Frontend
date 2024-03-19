@@ -14,6 +14,8 @@ import StaffLogin from './components/StaffLogin';
 import AdminAppView from './components/AdminAppView';
 import Testing from './components/Testing';
 import ReportGenerating from './components/ReportGenerating';
+import Home from './components/Home';
+
 
 
 
@@ -39,6 +41,8 @@ function App() {
                     <Route path="/adminapp-view" element={<AdminAppView />} />
                     <Route path="/testing" element={<Testing />} />
                     <Route path="/report-generating" element={<ReportGenerating />} />
+                    <Route path="/home" element={<Home />} />
+                   
 
                   
                     
