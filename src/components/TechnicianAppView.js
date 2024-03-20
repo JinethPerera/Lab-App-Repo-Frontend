@@ -22,9 +22,9 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 275,
     marginBottom: theme.spacing(2),
     backgroundColor: '#3498db',
-    transition: 'transform 0.3s ease', // Animation transition
+    transition: 'transform 0.3s ease', 
     '&:hover': {
-      transform: 'scale(1.05)', // Scale up on hover
+      transform: 'scale(1.05)', 
     },
   },
 }));

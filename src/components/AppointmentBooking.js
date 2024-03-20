@@ -1,5 +1,5 @@
-// AppointmentBooking.js
-import React, { useState } from 'react';
+
+import React, { useState , useEffect } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -120,6 +120,23 @@ function AppointmentBooking() {
   const handleDialogClose = () => {
     setOpenDialog(false);
   };
+
+  useEffect(() => {
+  
+    const smartsuppScript = document.createElement("script");
+    smartsuppScript.type = "text/javascript";
+    smartsuppScript.innerHTML = `
+      var _smartsupp = _smartsupp || {};
+      _smartsupp.key = 'b7263d274eeeba44b8a69f7a54df4924ea4f62bd';
+      window.smartsupp||(function(d) {
+        var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+        s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+        c.type='text/javascript';c.charset='utf-8';c.async=true;
+        c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+      })(document);
+    `;
+    document.body.appendChild(smartsuppScript);
+  }, []);
 
   return (
     <div>

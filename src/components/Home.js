@@ -1,5 +1,5 @@
-import React from 'react';
-import './Home.css'; 
+import React, { useEffect } from 'react';
+import '../styles/Home.css'; 
 import headerBg from '../assets/technician.png';
 import { Link } from 'react-router-dom';
 
@@ -8,23 +8,42 @@ function App() {
     window.location.href = '/registration'; 
   };
 
+  useEffect(() => {
+    // Smartsupp Live Chat script
+    const smartsuppScript = document.createElement("script");
+    smartsuppScript.type = "text/javascript";
+    smartsuppScript.innerHTML = `
+      var _smartsupp = _smartsupp || {};
+      _smartsupp.key = 'b7263d274eeeba44b8a69f7a54df4924ea4f62bd';
+      window.smartsupp||(function(d) {
+        var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+        s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+        c.type='text/javascript';c.charset='utf-8';c.async=true;
+        c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+      })(document);
+    `;
+    document.body.appendChild(smartsuppScript);
+  }, []);
+
   return (
     <div className="container">
       <nav>
         <div className="nav__logo">ABC LABS</div>
         <ul className="nav__links">
           <li className="link"><a href="#">Home</a></li>
-          <li className="link"><a href="#">About Us</a></li>
-          <li className="link"><a href="#">Courses</a></li>
-          <li className="link"><a href="#">Pages</a></li>
+          <li className="link"><Link to="/aboutus">About Us</Link></li>
+         
+          <li className="link"><a href="#">Services</a></li>
           <li className="link"><a href="#">Blog</a></li>
           <li className="link"><Link to="/register">Contact</Link></li> {/* Use Link component */}
         </ul>
         <button className="btn" onClick={handleRegisterClick}>Register Now</button>
       </nav>
       <header className="header">
+
+        
         <div className="content">
-          <h1><span>Get Quick</span><br />Medical Services</h1>
+          <h1><span>Get Quick</span><br />Medical Test Services</h1>
           <p>
             In today's fast-paced world, access to prompt and efficient medical
             services is of paramount importance. When faced with a medical

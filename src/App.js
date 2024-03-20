@@ -15,6 +15,8 @@ import AdminAppView from './components/AdminAppView';
 import Testing from './components/Testing';
 import ReportGenerating from './components/ReportGenerating';
 import Home from './components/Home';
+import AboutUs from './components/AboutUs';
+import Services from './components/Services';
 
 
 
@@ -42,6 +44,9 @@ function App() {
                     <Route path="/testing" element={<Testing />} />
                     <Route path="/report-generating" element={<ReportGenerating />} />
                     <Route path="/home" element={<Home />} />
+                    <Route path="/aboutus" element={<AboutUs />} />
+                    <Route path="/services" element={<Services />} />
+                   
                    
 
                   
